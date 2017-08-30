@@ -1,13 +1,16 @@
 table {
-    padding: 30px;
     border-collapse: collapse;
     width: 100%;
 }
 
-/*.pages {
-    display: none;
-}*/
-
 .next, .prev {
     visibility: hidden;
+}
+
+td, th {
+    padding: 5px;
+}
+
+.result {
+    margin-left: 10px;
 }

@@ -1,10 +1,11 @@
 var nextPage = 2;
 var actualPage = 1;
-const githubReposUrl = 'https://api.github.com/search/repositories';
+const githubReposUrl = 'https://api.github.com/search/repositories?sort=stars&';
 
 searchButtons();
 prevNextPage();
 
+//this method does the axios call and calculates the total pages to be shown
 function axiosCall(url) {
     const searchTerm = document.querySelector("input").value;
     document.querySelector(".result").textContent = "sending request with axios...";
@@ -14,10 +15,9 @@ function axiosCall(url) {
       console.log("AJAX request finished correctly :)");
       const data = response.data;
 
-      var totalPages = Number(response.data.total_count) / 20;
+      var totalPages = response.data.total_count / 20;
       var resto = totalPages % 20;
       totalPages = parseInt(totalPages);
-      console.log(totalPages);
       if (resto > 1) {
           totalPages = totalPages + 1;
       }
@@ -34,6 +34,7 @@ function axiosCall(url) {
     });
 }
 
+//this method constructs a url with the input text and checked value to be searched on github repositories
 function searchButtons() {
     var searchButton = document.querySelector(".search button");
     var orderButtons = $('.order input');
@@ -42,7 +43,7 @@ function searchButtons() {
         const searchTerm = document.querySelector(".search input").value;
         if (searchButton) {
             const checked = $('input[name="order"]:checked').val();
-            const url = githubReposUrl + '?q=' + searchTerm + '&per_page=20&order=' + checked;
+            const url = githubReposUrl + 'q=' + searchTerm + '&per_page=20&order=' + checked;
             axiosCall(url);
         }
     }
@@ -51,13 +52,13 @@ function searchButtons() {
         const searchTerm = document.querySelector(".search input").value;
         if (searchButton) {
             const checked = $('input[name="order"]:checked').val();
-            const url = githubReposUrl + '?q=' + searchTerm + '&per_page=20&order=' + checked;
+            const url = githubReposUrl + 'q=' + searchTerm + '&per_page=20&order=' + checked;
             axiosCall(url);
         }
     });
 }
 
-
+//this method aplicates 'prev' and 'next' buttons (with functionality page down and page up) if there is more than one page to be shown
 function prevNextPage(totalPages) {
     var prev = document.querySelector(".prev");
     var next = document.querySelector(".next");
@@ -69,27 +70,31 @@ function prevNextPage(totalPages) {
     }
 
     next.onclick = function () {
-        const url = githubReposUrl + '?q=' + searchTerm + '&per_page=20&order=' + checked + '&page=' + nextPage;
+        const url = githubReposUrl + 'q=' + searchTerm + '&per_page=20&order=' + checked + '&page=' + nextPage;
         nextPage++;
         actualPage++;
         if (nextPage >= totalPages) {
             nextPage = totalPages;
             actualPage = totalPages;
         };
+        console.log('Page up, now on page ' + actualPage);
         axiosCall(url);
     };
 
     prev.onclick = function () {
-        const url = githubReposUrl + '?q=' + searchTerm + '&per_page=20&order=' + checked + '&page=' + (actualPage - 1);
+        const url = githubReposUrl + 'q=' + searchTerm + '&per_page=20&order=' + checked + '&page=' + (actualPage - 1);
         actualPage--;
+        nextPage = actualPage + 1;
         if (actualPage <= 1) {
             actualPage = 1;
+            nextPage = 2;
         };
+        console.log('Page down, now on page ' + actualPage);
         axiosCall(url);
     };
 }
 
-
+//this method paints the table with the data received from method fillRowInTable(repo)
 function fillTable(data) {
     var htmlRow = '';
     for(repo of data.items) {
@@ -98,7 +103,7 @@ function fillTable(data) {
     document.querySelector("tbody").innerHTML = htmlRow;
 }
 
-
+//this method createst a table row with the selected data
 function fillRowInTable(repo) {
     var htmlColumns = '<td>' +  repo.id + ' (stars: ' + repo.stargazers_count + ')</td>';
     htmlColumns += '<td>' + repo.name + '</td>';
