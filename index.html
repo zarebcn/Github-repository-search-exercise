@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>search github repos</title>
+
+        <link rel="stylesheet" href="css/style.css">
+
+    </head>
+
+    <body>
+
+        <h1>Github repositories search</h1>
+
+
+        <div class="search">
+            <p><input><button>Search on GitHub</button><span class="result"></span></p>
+        </div>
+
+        <div class="order">
+            <p><input type="radio" name="order" value="desc" checked> Descendent
+                <input type="radio" name="order" value="asc"> Ascendent</p>
+        </div>
+
+
+        <table border="1">
+          <thead>
+            <tr>
+              <th>#id</th>
+              <th>Name</th>
+              <th>URL</th>
+              <th>Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+
+        <div class="pages">
+            <p><button class="prev">Prev</button>
+                <button class="next">Next</button></p>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="js/main.js"></script>
+
+    </body>
+</html>
