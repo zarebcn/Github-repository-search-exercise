@@ -3,7 +3,6 @@ var actualPage = 1;
 const githubReposUrl = 'https://api.github.com/search/repositories?sort=stars&';
 
 searchButtons();
-prevNextPage();
 
 //this method does the axios call and calculates the total pages to be shown
 function axiosCall(url) {
@@ -66,7 +65,15 @@ function prevNextPage(totalPages) {
     const checked = $('input[name="order"]:checked').val();
     if (totalPages > 1) {
         next.style.visibility = "visible";
+    }
+
+    if (actualPage > 1) {
         prev.style.visibility = "visible";
+        prev.style.display = "initial";
+    }
+
+    if (totalPages > 1 && actualPage == 1) {
+        prev.style.display = "none";
     }
 
     next.onclick = function () {
