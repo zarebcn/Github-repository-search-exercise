@@ -17,6 +17,7 @@ function axiosCall(url) {
       var totalPages = response.data.total_count / 20;
       var resto = totalPages % 20;
       totalPages = parseInt(totalPages);
+	  
       if (resto > 1) {
           totalPages = totalPages + 1;
       }
@@ -40,6 +41,8 @@ function searchButtons() {
 
     searchButton.onclick = function () {
         const searchTerm = document.querySelector(".search input").value;
+		nextPage = 2;
+		actualPage = 1;
         if (searchButton) {
             const checked = $('input[name="order"]:checked').val();
             const url = githubReposUrl + 'q=' + searchTerm + '&per_page=20&order=' + checked;
@@ -63,6 +66,11 @@ function prevNextPage(totalPages) {
     var next = document.querySelector(".next");
     const searchTerm = document.querySelector(".search input").value;
     const checked = $('input[name="order"]:checked').val();
+	
+	if (totalPages == 0 || totalPages == 1) {
+		next.style.visibility = "hidden";
+		prev.style.visibility = "hidden";
+	}
     if (totalPages > 1) {
         next.style.visibility = "visible";
     }
@@ -72,7 +80,7 @@ function prevNextPage(totalPages) {
         prev.style.display = "initial";
     }
 
-    if (totalPages > 1 && actualPage == 1) {
+    if (actualPage == 1) {
         prev.style.display = "none";
     }
 
